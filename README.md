@@ -1,46 +1,63 @@
-# Madison Research Brief – n8n Webhook UI
+# SignalScout AI
 
-This small Streamlit app provides a UI for triggering your n8n workflow (the one defined in `workflow_v2.json`) via **webhook** and viewing the resulting research brief.
+SignalScout AI is an automated research monitoring agent that gathers recent AI research items, evaluates their relevance to LLM behavior and evaluation, synthesizes themes, and produces a structured weekly research brief.
 
-## Prerequisites
+The system combines a Streamlit interface with an n8n workflow to create a repeatable research intelligence pipeline.
 
-- Python 3.9+ recommended
-- Your n8n workflow must:
-  - Start from a **Webhook** trigger (instead of Manual Trigger)
-  - Be configured so the webhook **response** returns the JSON from the node that builds the brief (e.g. the `Build Research Brief HTML` node, which outputs `report_title` and `report_html`).
+---
 
-## Setup
+## What the Agent Does
 
-From this `A5` folder:
+For each run, the agent:
 
-```bash
-python -m venv .venv
-source .venv/bin/activate  # on macOS / Linux
-# .venv\Scripts\activate   # on Windows (PowerShell / cmd)
+1. Pulls research items from configured sources (e.g., arXiv + RSS feeds)
+2. Evaluates each item’s relevance using an LLM
+3. Filters items above a relevance threshold
+4. Generates structured summaries
+5. Synthesizes dominant and emerging research themes
+6. Produces a readable research brief (native UI + HTML export)
+7. Optionally emails the report
 
-pip install -r requirements.txt
-```
+The goal is to transform raw research feeds into actionable intelligence.
 
-## Running the app
+---
 
-```bash
-streamlit run app.py
-```
+## User Actions
 
-This will open the Streamlit UI in your browser.
+From the UI, the user can:
 
-## Using the UI
+### Configure Data Collection
+- Set how many items to pull from each source
+- Limit how many items get evaluated by the model
 
-1. **In the sidebar**, paste your full n8n **Webhook URL**  
-   (e.g. `https://<your-host>/webhook/<id>` or `/webhook-test/<id>`).
-2. Optionally adjust the **JSON payload** (defaults to `{}`), if your workflow expects input.
-3. Click **“Run n8n Workflow”**.
-4. The app will:
-   - Show the **HTTP status code**.
-   - Show the **raw JSON** returned by n8n.
-   - If it finds a `report_html` field anywhere in the JSON, it will render the
-     research brief nicely inside the page.
+### Generate Research Brief
+- Trigger the evaluation workflow
+- View the structured brief directly in the app
+- Inspect included research items and explanations
 
-If you don’t see the rendered brief, double‑check that your webhook’s response
-is configured to return the node that contains `report_html`.
+### Export / Share
+- Download formatted HTML report
+- Send the brief via email
 
+---
+
+## System Architecture (Minimal Overview)
+
+Streamlit UI  
+→ sends parameters to  
+n8n Workflow (Webhook Trigger)  
+→ ingestion → evaluation → filtering → synthesis → formatting  
+→ returns structured JSON + HTML report  
+→ Streamlit renders native view + export
+
+The Streamlit app is only a control and visualization layer.  
+All reasoning and orchestration logic lives inside the n8n workflow.
+
+---
+
+## Running Locally
+
+### 1. Start n8n
+The app expects the workflow webhook to be running locally.
+
+Example:
