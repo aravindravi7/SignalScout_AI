@@ -5,7 +5,7 @@ import streamlit as st
 
 # Fixed n8n webhook URL for this assignment.
 # If you change the workflow, update this value.
-WEBHOOK_URL = "http://localhost:5678/webhook/07b7fb82-fd3b-4cfa-8f6e-c5d4f89aa42a"
+WEBHOOK_URL = st.secrets["N8N_WEBHOOK_URL"]
 
 
 def fmt_dt(iso_like: Any) -> str:
