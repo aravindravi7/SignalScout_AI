@@ -7,6 +7,26 @@ import streamlit as st
 # If you change the workflow, update this value.
 WEBHOOK_URL = st.secrets["N8N_WEBHOOK_URL"]
 
+def render_about() -> None:
+    with st.expander("About SignalScout AI", expanded=False):
+        st.markdown(
+            """
+**What it does**  
+SignalScout AI turns raw AI research feeds into a weekly research brief by evaluating relevance, summarizing key findings, and synthesizing dominant + emerging themes.
+
+**Who it’s for**  
+- AI/ML engineers tracking LLM evaluation, safety, and agents  
+- Researchers who want “signal over noise” from new papers  
+- Product/strategy folks monitoring capability and evaluation trends
+
+**Tech stack**  
+- **Streamlit** (UI)  
+- **n8n** (workflow orchestration)  
+- **LLM-based evaluation + summarization** inside the n8n pipeline  
+- Returns **structured JSON** + **HTML brief** for export/sharing
+"""
+        )
+
 
 def fmt_dt(iso_like: Any) -> str:
     """Format ISO-ish timestamps into a compact display string."""
@@ -215,6 +235,17 @@ def main() -> None:
             value=60,
             step=10,
         )
+        
+        st.markdown("---")
+        st.caption("Built by **Aravind Ravi**")
+
+        cols = st.columns(2)
+        with cols[0]:
+            st.link_button("GitHub", "https://github.com/aravindravi7")
+            st.link_button("LinkedIn", "https://linkedin.com/in/-aravindravi/")
+        with cols[1]:
+            st.link_button("Portfolio", "https://aravindravi.sites.northeastern.edu/")
+            st.link_button("Email", "mailto:aravindravi.academics@gmail.com")
 
     run_clicked = st.button("▶️ Run workflow and generate brief", use_container_width=True)
 
