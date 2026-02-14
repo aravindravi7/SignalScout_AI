@@ -1,63 +1,235 @@
 # SignalScout AI
 
-SignalScout AI is an automated research monitoring agent that gathers recent AI research items, evaluates their relevance to LLM behavior and evaluation, synthesizes themes, and produces a structured weekly research brief.
+**Live App:** https://madison-agent-signalscout-ai.streamlit.app/
 
-The system combines a Streamlit interface with an n8n workflow to create a repeatable research intelligence pipeline.
+SignalScout AI is an automated research monitoring agent that analyzes new AI research papers and produces a structured weekly intelligence brief.  
+Instead of manually browsing arXiv or RSS feeds, users receive a curated, evaluated, and synthesized report focused on **LLM behavior, evaluation, and agent research trends**.
+
+The system combines a **Streamlit interface** (control + visualization) with an **n8n automation workflow** (data ingestion, reasoning, filtering, synthesis, and reporting).
+
+---
+
+## What Problem This Solves
+
+AI research is growing too quickly to track manually. Most researchers and builders:
+
+- skim titles without context
+- miss important evaluation papers
+- cannot identify macro research trends
+- struggle to separate noise from signal
+
+SignalScout converts raw research feeds into **actionable research intelligence**.
 
 ---
 
 ## What the Agent Does
 
-For each run, the agent:
+For each run, SignalScout:
 
-1. Pulls research items from configured sources (e.g., arXiv + RSS feeds)
-2. Evaluates each item’s relevance using an LLM
-3. Filters items above a relevance threshold
-4. Generates structured summaries
-5. Synthesizes dominant and emerging research themes
-6. Produces a readable research brief (native UI + HTML export)
-7. Optionally emails the report
+1. Pulls research items from sources (arXiv + curated RSS)
+2. Evaluates each paper’s relevance to LLM behavior & evaluation
+3. Scores the paper using an LLM judge
+4. Filters high-value research (threshold based inclusion)
+5. Generates structured summaries
+6. Synthesizes dominant and emerging themes
+7. Produces a readable research brief
+8. Optionally emails the report
 
-The goal is to transform raw research feeds into actionable intelligence.
+The output is a weekly research brief — not a feed.
 
 ---
 
-## User Actions
+## User Interface Capabilities
 
-From the UI, the user can:
+The Streamlit interface acts as a control panel for the agent.
 
-### Configure Data Collection
-- Set how many items to pull from each source
-- Limit how many items get evaluated by the model
+### Data Controls
+Users can customize how much research gets processed:
+
+- Number of papers pulled from arXiv
+- Number of items pulled from RSS feeds
+- Maximum items evaluated by the LLM
+- Manual request timeout
+
+Previously these were hardcoded inside n8n — now they are configurable per run.
+
+---
+
+### Email Delivery
+Users can request the brief to be sent to **any email address on demand**.
+
+Earlier: fixed email recipient inside automation  
+Now: user-controlled delivery per execution
+
+---
 
 ### Generate Research Brief
-- Trigger the evaluation workflow
-- View the structured brief directly in the app
-- Inspect included research items and explanations
+When the workflow runs, the UI shows:
 
-### Export / Share
-- Download formatted HTML report
-- Send the brief via email
+- Batch metadata
+- Included research papers
+- Relevance explanations
+- Summaries
+- Why the research matters
+- Weekly theme synthesis
 
 ---
 
-## System Architecture (Minimal Overview)
+### Export & Sharing
+Users can:
 
-Streamlit UI  
-→ sends parameters to  
-n8n Workflow (Webhook Trigger)  
-→ ingestion → evaluation → filtering → synthesis → formatting  
-→ returns structured JSON + HTML report  
-→ Streamlit renders native view + export
+- View formatted HTML report
+- Download the report
+- Email the report
 
-The Streamlit app is only a control and visualization layer.  
-All reasoning and orchestration logic lives inside the n8n workflow.
+---
+
+## Output Structure
+
+### Weekly Theme Synthesis
+- Dominant research themes
+- Emerging research directions
+- Editorial interpretation
+- Meta-level research observation
+
+### Included Items
+For each included paper:
+- Article relevance score
+- Tags
+- Summary
+- Why it matters
+- Inclusion reasoning
+
+---
+
+## System Architecture
+Streamlit UI (Control Panel)
+↓
+Webhook Request
+↓
+n8n Workflow
+Ingestion → Evaluation → Filtering → Synthesis → Formatting
+↓
+Structured JSON + HTML
+↓
+Streamlit Rendering + Export
+
+
+### Responsibility Separation
+
+**Streamlit**
+- User inputs
+- Visualization
+- Export & email trigger
+
+**n8n**
+- Data collection
+- LLM reasoning
+- Evaluation scoring
+- Thematic analysis
+- Report construction
+
+All intelligence lives in the automation layer.
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|------|------|
+| UI | Streamlit |
+| Automation | n8n |
+| LLM Evaluation | OpenAI API |
+| Data Sources | arXiv + RSS feeds |
+| Deployment | Streamlit Cloud |
+| Integration | Webhook JSON pipeline |
+
+---
+
+## How It Works Internally
+
+1. Sources ingest new research papers
+2. LLM evaluates relevance to agent/LLM behavior research
+3. Scoring threshold filters signal from noise
+4. Selected papers summarized
+5. Batch analyzed collectively
+6. Themes extracted
+7. Structured brief returned to UI
+
+The agent performs **analysis across papers**, not per-paper summarization only.
 
 ---
 
 ## Running Locally
 
-### 1. Start n8n
-The app expects the workflow webhook to be running locally.
+### Requirements
+- Python 3.10+
+- n8n instance
+- OpenAI API key configured inside n8n
 
-Example:
+### Steps
+
+1. Clone repo
+2. Install dependencies
+
+pip install -r requirements.txt
+
+
+3. Start n8n workflow
+4. Add webhook URL to Streamlit secrets
+
+
+5. Run app
+
+streamlit run app.py
+
+
+---
+
+## Public Deployment
+
+The application is deployed using:
+
+- GitHub repository
+- Streamlit Cloud hosting
+- n8n production webhook
+
+Public URL:  
+https://madison-agent-signalscout-ai.streamlit.app/
+
+No login required.
+
+---
+
+## Intended Users
+
+- AI researchers
+- AI product managers
+- ML engineers
+- Technical founders
+- Anyone tracking LLM evaluation research
+
+---
+
+## Author
+
+**Aravind Ravi**
+
+Portfolio: https://aravindravi.sites.northeastern.edu/wp-admin/  
+LinkedIn: https://linkedin.com/in/-aravindravi/  
+GitHub: https://github.com/aravindravi7  
+Email: aravindravi.academics@gmail.com
+
+---
+
+## Project Purpose
+
+This project demonstrates building a real AI agent interface:
+
+- UI → automation orchestration
+- configurable reasoning pipeline
+- research intelligence synthesis
+- production deployment
+
+It is not just a dashboard — it is an operational AI workflow surfaced as a usable product.
+
