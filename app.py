@@ -190,6 +190,8 @@ def main() -> None:
         "extracts dominant + emerging themes and produces a clean brief with the top included papers."
     )
 
+    render_about()
+
     with st.sidebar:
         st.subheader("Send brief by email")
         send_email_flag = st.checkbox("Send brief by email in this run", value=False)
